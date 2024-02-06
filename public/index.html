@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio App</title>
+</head>
+<body>
+    <h1>Welcome to the Radio App</h1>
+    <form id="createSessionForm">
+        <input type="text" id="hostUserId" placeholder="Enter Host User ID">
+        <input type="password" id="sessionPassword" placeholder="Set Session Password">
+        <button type="submit">Create Session</button>
+    </form>
+
+    <form id="userForm">
+        <input type="text" id="userId" placeholder="Enter User ID">
+        <button type="submit">Add User to Session</button>
+    </form>
+
+    <script>
+        document.getElementById('createSessionForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const hostUserId = document.getElementById('hostUserId').value;
+            const password = document.getElementById('sessionPassword').value;
+            const response = await fetch('/create-session', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ hostUserId, password })
+            });
+            const data = await response.json();
+            console.log(data); // Handle the response data
+        });
+    </script>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the default form submission
+
+            const userId = document.getElementById('userId').value;
+            const response = await fetch('/add-user-to-session', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId }) // Send the user ID in the request body
+            });
+
+            const data = await response.json();
+            console.log(data); // Handle the response data
+        });
+    </script>
+</body>
+</html>
